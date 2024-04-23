@@ -1,0 +1,15 @@
+{
+  "name": "fendt-caravan",
+  "author": "peer-plan",
+  "publish": false,
+  "dependencies": {
+    "lib": "latest"
+  },
+  "scripts":{
+    "start": "vercel dev"
+
+  },
+  "devDependencies": {
+    "vercel": "^34.1.1"
+  }
+}
