@@ -1,10 +1,8 @@
 const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
 
 
-export const GET = async (request, result) => {
-  const patametersString = new URL(request.url).search;
-  const paramEntries = new URLSearchParams(patametersString).entries();
-  const params = Object.fromEntries(paramEntries);
+export default async (request, result) => {
+  const { body } = request;
 
   try {
     let resultData = await lib.http.request['@1.1.7'].get({
@@ -14,9 +12,9 @@ export const GET = async (request, result) => {
         'Accept': `application/json`
       },
       queryParams: {
-        'code': params.postcode,
-        'compare': params.compare,
-        'country': params.country,
+        'code': body.postcode,
+        'compare': body.compare,
+        'country': body.country,
         'unit': `km`
       }
     });
