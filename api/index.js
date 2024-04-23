@@ -14,9 +14,9 @@ export const GET = async (request, result) => {
         'Accept': `application/json`
       },
       queryParams: {
-        'code': `${params.postcode}`,
-        'compare': `${params.compare}`,
-        'country': `${params.country}`,
+        'code': params.postcode,
+        'compare': params.compare,
+        'country': params.country,
         'unit': `km`
       }
     });
@@ -25,12 +25,11 @@ export const GET = async (request, result) => {
 
     if (Object.keys(recivedData).length > 0) {
       let key = Object.keys(recivedData).reduce((key, v) => recivedData[v] < recivedData[key] ? v : key);
-      return new Request(key);
+      return new Response(key);
     } else {
-      return new Request('');
+      return new Response('');
     }
   } catch (error) {
-    console.log(error);
-    return new Request('NOT FOUND')
+    return new Response('NOT FOUND')
   }
 }
