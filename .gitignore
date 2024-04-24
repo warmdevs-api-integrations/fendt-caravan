@@ -3,3 +3,4 @@ env.json
 payloads.json
 .DS_Store
 .vercel
+.env
