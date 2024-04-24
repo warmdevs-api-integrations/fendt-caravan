@@ -1,9 +1,11 @@
 const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
 
 
-export default async (request, result) => {
+const handler = async (request, result) => {
   const { body } = request;
   let key;
+
+  const queryParams = JSON.parse(body);
 
   try {
     let resultData = await lib.http.request['@1.1.7'].get({
@@ -13,9 +15,9 @@ export default async (request, result) => {
         'Accept': `application/json`
       },
       queryParams: {
-        'code': body.postcode,
-        'compare': body.compare,
-        'country': body.country,
+        'code': queryParams.postcode,
+        'compare': queryParams.compare,
+        'country': queryParams.country,
         'unit': `km`
       }
     });
@@ -33,3 +35,24 @@ export default async (request, result) => {
 
   return result.json(key);
 }
+
+
+const allowCors = fn => async (req, res) => {
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  )
+  if (req.method === 'OPTIONS') {
+    res.status(200).end()
+    return
+  }
+
+  return await fn(req, res)
+}
+
+module.exports = allowCors(handler)
